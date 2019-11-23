@@ -1,0 +1,8 @@
+.coverage
+.git
+.pytest_cache
+Jenkinsfile
+js_example.egg-info
+js_example/__pycache__
+tests/__pycache__
+venv
