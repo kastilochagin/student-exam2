@@ -25,7 +25,7 @@ pipeline {
 	stage('Logining to DockerHub and pushing the Docker image') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DockerHubUser', passwordVariable: 'DockerHubPassword')]) {
-          sh "docker login -u ${env.DockerHubUser} -p ${env.DockerHubPassword}"
+          sh "echo "${env.DockerHubPassword}" | docker login -u ${env.DockerHubUser} --password-stdin"
           sh 'docker push kastilochagin/priv:app_version${env.BUILD_ID}'
         }
       }
