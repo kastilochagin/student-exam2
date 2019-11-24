@@ -1,6 +1,11 @@
 pipeline {
   agent any
-  stages {
+  stages { 
+    stage('Cleaning after previous builds') {
+	  steps {
+	    sh 'rm -rf landing'
+		}
+	}
     stage('Cloning GitHub repo and running Python tests') {
       steps {
         sh """
@@ -27,7 +32,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DockerHubUser', passwordVariable: 'DockerHubPassword')]) {
           sh """
 	  echo "${env.DockerHubPassword}" | docker login -u ${env.DockerHubUser} --password-stdin
-          docker push kastilochagin/priv:app_version${env.BUILD_ID}
+          docker push kastilochagin/priv:app
 	  """
         }
       }
