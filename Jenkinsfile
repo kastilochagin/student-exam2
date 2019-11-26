@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent {label '!jenkins-master'}
   stages { 
     stage('Cleaning after previous builds') {
 	  steps {
