@@ -1,6 +1,7 @@
 .coverage
 .git
 .pytest_cache
+cipipeline_check
 docker-compose.yml
 Jenkinsfile
 js_example.egg-info
