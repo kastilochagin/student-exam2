@@ -2,32 +2,30 @@ pipeline {
   agent {label '!jenkins-master'}
   stages { 
     stage('Cleaning after previous builds') {
-	  steps {
-	    sh 'rm -rf landing'
-		}
-	}
+      steps {
+        sh 'rm -rf landing'
+      }
+    }
     stage('Cloning GitHub repo and running Python tests') {
       steps {
         sh """
-		git clone https://github.com/kastilochagin/student-exam2.git landing 
-		cd landing 
-		python3 -m venv venv
-		. venv/bin/activate
-		pip install -e '.[test]'
-		coverage run -m pytest 
-		coverage report
-		deactivate			
-		"""
-        }
-      }	  
-	  
-	stage('Building Docker image') {
-	  steps {
-		sh 'docker build -t kastilochagin/priv:app .'
-		}
-	}
-	  
-	stage('Logining to DockerHub and pushing Docker image') {
+	git clone https://github.com/kastilochagin/student-exam2.git landing 
+	cd landing 
+	python3 -m venv venv
+	. venv/bin/activate
+	pip install -e '.[test]'
+	coverage run -m pytest 
+	coverage report
+	deactivate			
+	"""
+      }
+    }
+    stage('Building Docker image') {
+      steps {
+        sh 'docker build -t kastilochagin/priv:app .'
+      }
+    }  
+    stage('Logining to DockerHub and pushing Docker image') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DockerHubUser', passwordVariable: 'DockerHubPassword')]) {
           sh """
@@ -36,17 +34,14 @@ pipeline {
 	  """
         }
       }
-    }
-	  
-	stage('Landing directory removal') {
-	  steps {
-		sh """
-		cd ..
-		rm -rf landing
-		"""
-		}
-	}
-	 
-  }
-   
+    }	  
+    stage('Landing directory removal') {
+      steps {
+	sh """
+	cd ..
+	rm -rf landing
+	"""
+      }
+    } 
+  }   
 }
